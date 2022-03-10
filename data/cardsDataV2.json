@@ -1,0 +1,82 @@
+[
+    {
+        "name": "To Do",
+        "items": [
+            {
+                "id": 1,
+                "title": "Belajar Orange3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 2,
+                "title": "Belajar Python3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 3,
+                "title": "Belajar NodeJS",
+                "description": "Empty Description"
+            }
+        ]
+    },
+    {
+        "name": "Do Today",
+        "items": [
+            {
+                "id": 4,
+                "title": "Do Today Belajar Orange3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 5,
+                "title": "Do Today Belajar Python3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 6,
+                "title": "Do Today Belajar NodeJS",
+                "description": "Empty Description"
+            }
+        ]
+    },
+    {
+        "name": "Doing Right Now",
+        "items": [
+            {
+                "id": 7,
+                "title": "Kerjaa Orange3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 8,
+                "title": "Kerjaa Python3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 9,
+                "title": "Kerjaa NodeJS",
+                "description": "Empty Description"
+            }
+        ]
+    },
+    {
+        "name": "Finished",
+        "items": [
+            {
+                "id": 10,
+                "title": "Selesai Orange3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 11,
+                "title": "Selesai Python3",
+                "description": "Empty Description"
+            },
+            {
+                "id": 12,
+                "title": "Selesai NodeJS",
+                "description": "Empty Description"
+            }
+        ]
+    }
+]

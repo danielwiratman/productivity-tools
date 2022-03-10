@@ -1,4 +1,4 @@
-import Card from "./Card";
+import Card from "./MainContentComponents/Card";
 import cardsData from "../data/cardsData";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useState, useEffect } from "react";
@@ -17,12 +17,12 @@ export default function MainContent() {
         const copiedDatas = [...datas];
         const [removed] = copiedDatas.splice(source.index, 1);
         copiedDatas.splice(destination.index, 0, removed);
-        console.log(datas, copiedDatas)
+        console.log(datas, copiedDatas);
         setDatas(copiedDatas);
     };
 
     return (
-        <div className="h-screen w-screen flex flex-col justify-center items-center  ">
+        <div className="h-screen w-screen flex flex-col justify-center items-center">
             {winReady ? (
                 <DragDropContext
                     onDragEnd={(result) => handleOnDragEnd(result)}
@@ -40,13 +40,13 @@ export default function MainContent() {
                                         key={data.id.toString()}
                                         draggableId={data.id.toString()}
                                         index={index}
-                                        style={{margin: '0 0 88px 0'}}
                                     >
                                         {(provided, snapshot) => (
                                             <div
                                                 ref={provided.innerRef}
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
+                                                className='border-t-transparent border-t-[20px]'
                                             >
                                                 <Card data={data} />
                                             </div>
