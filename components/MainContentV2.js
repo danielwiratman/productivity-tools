@@ -74,6 +74,10 @@ export default function MainContent() {
         }
     }
 
+    function handleDeleteEntry(e) {
+        e.target.parentElement.parentElement.remove()
+    }
+
     useEffect(() => {
         setWinReady(true);
     }, []);
@@ -107,7 +111,10 @@ export default function MainContent() {
                                                         className="border-y-transparent border-y-[10px]"
                                                     >
                                                         <div className="select-none p-5 shadow-lg bg-white border-t-4 border-t-slate-800 rounded-md">
-                                                            <h1 className="font-bold text-2xl">
+                                                            <button onClick={(e) => handleDeleteEntry(e)} className="block bg-red w-full text-right text-xl font-semibold text-red-600 relative bottom-3">
+                                                                x
+                                                            </button>
+                                                            <h1 className="font-bold text-2xl mt-[-30px]">
                                                                 {item.title}
                                                             </h1>
                                                             <hr className="mt-2 mb-1" />
