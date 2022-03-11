@@ -1,5 +1,4 @@
-import cardsData from "../data/cardsDataV2.json";
-import Card from "./MainContentV2/Card";
+import cardsData from "../data/cardsDataV3.json";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useState, useEffect } from "react";
 
@@ -17,6 +16,16 @@ export default function MainContent() {
     const [data, setData] = useState(cardsData);
     const [showForm, setShowForm] = useState(false);
     const [selectedBoard, setSelectedBoard] = useState(0);
+
+    async function createNewEntryDb(entry, boardId) {
+        const response = await fetch("/api/cardsData/create", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ entry: entry, boardId: boardId }),
+        });
+    }
 
     function handleOnDragEnd(result) {
         if (!result.destination) {
@@ -70,16 +79,49 @@ export default function MainContent() {
                 setData(newData);
                 setShowForm(false);
                 e.target.value = "";
+                createNewEntryDb(item, boardId);
             }
         }
     }
 
     function handleDeleteEntry(e) {
-        e.target.parentElement.parentElement.remove()
+        const itemIndex = e.target.attributes["data-itemindex"].value;
+        const boardIndex = e.target.attributes["data-boardindex"].value;
+
+        e.target.parentElement.parentElement.remove();
+
+        deleteEntryDb(itemIndex, boardIndex);
+    }
+
+    async function deleteEntryDb(itemIndex, boardIndex) {
+        const response = await fetch("/api/cardsData/delete", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ itemIndex: itemIndex, boardIndex: boardIndex }),
+        });
+    }
+
+    async function readFromDb() {
+        const response = await fetch("/api/cardsData/read");
+        return response.json();
     }
 
     useEffect(() => {
         setWinReady(true);
+        let emp = [{ items: [] }, { items: [] }, { items: [] }, { items: [] }];
+        readFromDb().then((result) => {
+            const dataFromDb = result.data;
+            dataFromDb.forEach((data) => {
+                emp[parseInt(data.boardId)].items = data.item;
+            });
+            setData(emp);
+        });
+
+        // emp.forEach((data)=>console.log(data))
+        // // console.log(emp.items.map((item) => {item: item}))
+        // setData(emp)
     }, []);
 
     return winReady ? (
@@ -111,7 +153,20 @@ export default function MainContent() {
                                                         className="border-y-transparent border-y-[10px]"
                                                     >
                                                         <div className="select-none p-5 shadow-lg bg-white border-t-4 border-t-slate-800 rounded-md">
-                                                            <button onClick={(e) => handleDeleteEntry(e)} className="block bg-red w-full text-right text-xl font-semibold text-red-600 relative bottom-3">
+                                                            <button
+                                                                data-itemindex={
+                                                                    itemIndex
+                                                                }
+                                                                data-boardindex={
+                                                                    boardIndex
+                                                                }
+                                                                onClick={(e) =>
+                                                                    handleDeleteEntry(
+                                                                        e
+                                                                    )
+                                                                }
+                                                                className="block bg-red w-full text-right text-xl font-semibold text-red-600 relative bottom-3"
+                                                            >
                                                                 x
                                                             </button>
                                                             <h1 className="font-bold text-2xl mt-[-30px]">
@@ -211,6 +266,10 @@ export default function MainContent() {
                                                                     false
                                                                 );
                                                                 ele.value = "";
+                                                                createNewEntryDb(
+                                                                    item,
+                                                                    boardId
+                                                                );
                                                             }
                                                         }}
                                                         data-id={boardIndex}
