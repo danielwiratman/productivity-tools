@@ -32,7 +32,6 @@ export default function MainContent() {
             return;
         }
         const { source, destination } = result;
-        console.log(source, destination);
         const copiedData = [...data];
         const [removed] = copiedData[source.droppableId].items.splice(
             source.index,
