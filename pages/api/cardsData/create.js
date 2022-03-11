@@ -31,6 +31,5 @@ export default async (req, res) => {
             }
         );
     }
-    console.log("SUCCESS ADD TO DB");
     res.json({});
 };

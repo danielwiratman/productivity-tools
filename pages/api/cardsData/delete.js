@@ -14,7 +14,6 @@ export default async (req, res) => {
             }
         }
     )
-    console.log("SUCCESS DELETE FROMM DB")
 
 
     res.json({})
