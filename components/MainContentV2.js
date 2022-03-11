@@ -32,17 +32,50 @@ export default function MainContent() {
             return;
         }
         const { source, destination } = result;
+        console.log(source, destination);
         const copiedData = [...data];
         const [removed] = copiedData[source.droppableId].items.splice(
             source.index,
             1
         );
+
+        // deleteEntryDb(parseInt(source.droppableId), source.index)
         copiedData[destination.droppableId].items.splice(
             destination.index,
             0,
             removed
         );
+        // createNewEntryDb(removed, parseInt(destination.droppableId))
+        updateToDb(
+            removed,
+            parseInt(source.droppableId),
+            source.index,
+            parseInt(destination.droppableId),
+            destination.index
+        );
         setData(copiedData);
+    }
+
+    async function updateToDb(
+        data,
+        srcBoardIndex,
+        srcItemIndex,
+        destBoardIndex,
+        destItemIndex
+    ) {
+        const response = await fetch("/api/cardsData/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                data: data,
+                srcBoardIndex: srcBoardIndex,
+                srcItemIndex: srcItemIndex,
+                destBoardIndex: destBoardIndex,
+                destItemIndex: destItemIndex,
+            }),
+        });
     }
 
     function handleNewEntry(e) {
@@ -99,7 +132,10 @@ export default function MainContent() {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ itemIndex: itemIndex, boardIndex: boardIndex }),
+            body: JSON.stringify({
+                itemIndex: itemIndex,
+                boardIndex: boardIndex,
+            }),
         });
     }
 
@@ -152,7 +188,7 @@ export default function MainContent() {
                                                         {...provided.dragHandleProps}
                                                         className="border-y-transparent border-y-[10px]"
                                                     >
-                                                        <div className="select-none p-5 shadow-lg bg-white border-t-4 border-t-slate-800 rounded-md">
+                                                        <div className="flex flex-col select-none p-5 shadow-lg bg-white border-t-4 border-t-slate-800 rounded-md">
                                                             <button
                                                                 data-itemindex={
                                                                     itemIndex
@@ -165,11 +201,11 @@ export default function MainContent() {
                                                                         e
                                                                     )
                                                                 }
-                                                                className="block bg-red w-full text-right text-xl font-semibold text-red-600 relative bottom-3"
+                                                                className="mr-0 ml-auto text-right text-xl font-semibold text-red-600 relative bottom-3 "
                                                             >
                                                                 x
                                                             </button>
-                                                            <h1 className="font-bold text-2xl mt-[-30px]">
+                                                            <h1 className="font-bold text-2xl mt-[-33px]">
                                                                 {item.title}
                                                             </h1>
                                                             <hr className="mt-2 mb-1" />
